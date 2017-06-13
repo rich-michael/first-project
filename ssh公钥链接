@@ -1,0 +1,21 @@
+vm 的远程管理
+在172.16.2.9上远程图形管理172.16.2.16
+1，先在/etc/hosts里绑定对方（被管理的宿主机器)的主机名
+2，做ssh等效性
+# ssh-keygen 	--直接三次回车
+# ssh-add /root/.ssh/id_rsa	--加入自己的私钥
+Identity added: /root/.ssh/id_rsa (/root/.ssh/id_rsa)
+
+# ssh-copy-id -i /root/.ssh/id_rsa.pub 172.16.2.16
+--把自己的公钥scp传给对方
+
+3,所有的被管理客户端宿主机，需要启动libvirtd服务
+
+4，virt-manager－－》file－－》add connection－－》填上要远程连接的主机IP（或主机名，但要求/etc/hosts绑定)
+
+5，连接上去之后，就可以看到有远程的虚拟客户机，双击就可以远程调取他们的图形了
+
+--或者用命令的方式去连接
+# virt-viewer -c qemu+ssh://root@172.16.2.16/system kvm1
+--表示使用root用户(当然前面你做的ssh等效性需要是root用户)去访问172.16.2.16上叫kvm1的虚拟机
+删除密钥链接：ssh-keygen -R 192.168.1.203(你远程服务器的IP)
