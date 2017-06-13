@@ -1,0 +1,25 @@
+一、使用route命令添加临时路由添加到主机的路由# route add -host 192.168.1.123 dev eth0
+# route  add -host 192.168.1.123 gw192.168.1.1
+添加到网络的路由# route add -net 192.168.1.123 netmask 255.255.255.0eth0
+# route add -net 192.168.1.123 netmask 255.255.255.0 gw192.168.1.1
+# route add -net 192.168.1.123 netmask 255.255.255.0 gw192.168.1.1 eth1
+# route add -net 192.168.1.0/24 eth1
+添加默认网关# route add default gw 192.168.1.1
+删除路由# route del -host 192.168.1.11 dev eth0
+# route del -net 192 .168.1.123 netmask 255.255.255.0
+
+二、在linux中添加永久路由的方法1、写入/etc/rc.loacl可以将上面提到的命令写入/etc/rc.local文件中，这样在系统启动的时候会自动加入相关的路由设置不过这种方法有一个缺点：如果某个系统服务，比如说是NFS服务，这个服务是在启动network服务之后，在执行rc.local之前，如果你设置的有自动挂载的nfs，那么，这里链路的不通畅，会造成挂载的失败。另外一个就是如果你重启了网络服务器，那么路由就失效了，这个时候你不得不重新加载这个文件，但是如果你是远程操作的呢？所以，这个方法不是非常的不推荐 
+
+
+2、在/etc/sysconfig/network里添加到文件末尾，格式如下（注：未验证有效性）：GATEWAY=gw-ip 或者 GATEWAY=gw-dev这种方式从外观上来看只能用于添加默认网关了。。。对于多路网络环境貌似不太适合的样子 
+
+
+3、直接写入ifcfg文件在配置ip地址的时候直接将GATEWAY的配置写入ifcfg文件，形式：GATEWAY=gw-ip适合添加默认路由
+
+
+ 4、写入/etc/sysconfig/static-routes文件默认在/etc/sysconifg目录中是没有这个文件的，需要我们手工创建，对这个文件的调用在下面：
+ /etc/init.d/network：    159        
+ # Add noninterface-specific static-routes.    160        
+ if [ -f/etc/sysconfig/static-routes ]; then    161          
+ grep "^any"/etc/sysconfig/static-routes | while read ignore args ; do    162           
+  /sbin/route add -$args    163          done    164        fi/etc/sysconfig/static-routes：any net 192.168.1.0/24 gw 192.168.1.24any net 192.168.2.0 netmask 255.255.255.0 gw 192.168.2.1这种方式的话，和rc.local比较而言，比较实用，还比如nfs，这个路由的生效时间是在网络服务network启动的时候生效的，而其他的一些网络相关服务都是在网络服务启动成功之后再启动的，所以能够保证网络链路的通畅。而且，如果我重启了网络服务，这个脚本是在网络服务启动脚本里面调用的，所以也会自动添加上相关的路由设
