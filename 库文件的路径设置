@@ -1,0 +1,10 @@
+讨论：如果另一个软件向调用一个软件的库文件；默认会到/lib,/lib64,/usr/lib,/usr/lib64路径里找
+如果该默认路径下没有，我们需要将其放到一个ldconfig命令能找到的路径下。
+ldconfig：动态连接库的一个管理命令；主要用途就是根据配置文件到默认的路径下面去找相应的库文件或者指定配置文件
+
+方法：
+vim /etc/ld.so.conf
+include ld.so.conf.d/*.conf
+/usr/loacl/abc
+
+ldconfig 动连接
