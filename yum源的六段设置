@@ -1,0 +1,28 @@
+ 常见的yum源应该包括几块，基本的，loadbalance(负载均衡),HighAvailability（高可用）等
+ 
+ vim /etc/yum.repos.d/rhel-source.repo --把kickstart server服务器的yum配置文件，做成rhel6的完整配置
+[server]
+name=server
+baseurl=file:///yum/Server
+enabled=1
+gpgcheck=0
+[loadbalancer]
+name=loadbalancer
+baseurl=file:///yum/LoadBalancer
+enabled=1
+gpgcheck=0
+[HighAvailability]
+name=HighAvailability
+baseurl=file:///yum/HighAvailability
+enabled=1
+gpgcheck=0
+[ScalableFileSystem]
+name=ScalableFileSystem
+baseurl=file:///yum/ScalableFileSystem
+enabled=1
+gpgcheck=0
+[ResilientStorage]
+name=ResilientStorage
+baseurl=file:///yum/ResilientStorage
+enabled=1
+gpgcheck=0
