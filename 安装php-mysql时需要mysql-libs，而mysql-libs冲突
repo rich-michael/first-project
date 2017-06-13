@@ -1,0 +1,11 @@
+问题：
+/usr/share/mysql/ukrainian/errmsg.sys from install of mysql-libs-5.5.53-1.el6.remi.x86_64 conflicts with file from package MySQL-server-5.6.19-1.el6.x86_64
+
+MySQL server 安装的mysql 5.5
+但是其他的应用需要安装mysql 5.1的库
+不需要降级mysql,安装 MySQL-shared-compat 就可以了
+到 http://rpm.pbone.net 找到相应版本号的rpm包
+例如我的是 5.5.29
+http://rpm.pbone.net/index.php3/stat/4/idpl/20153531/dir/redhat_el_6/com/MySQL-shared-compat-5.5.29-2.el6.x86_64.rpm.html
+ 
+下载安装上就OK了
